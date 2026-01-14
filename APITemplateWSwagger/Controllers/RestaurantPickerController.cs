@@ -19,7 +19,6 @@ public class RestaurantPickerController : ControllerBase
     {
         var result = service.Pick(category);
 
-        // Validation + helpful feedback
         if (result == "Invalid category")
         {
             return BadRequest(new

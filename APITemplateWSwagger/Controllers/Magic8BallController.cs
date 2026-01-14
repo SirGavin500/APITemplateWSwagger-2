@@ -17,7 +17,6 @@ public class Magic8BallController : ControllerBase
     [HttpGet("ask")]
     public IActionResult Ask(string question)
     {
-        // Validation: user must ask a question
         if (string.IsNullOrWhiteSpace(question))
         {
             return BadRequest("You must ask a question.");
