@@ -8,4 +8,4 @@
 
  // You can add multiple dates with description.
 
-// Person who Peer Reviewed your assignment 
+// Person who Peer Reviewed your assignment: Nicolas Gonzaba- Restaurant picker doesn't tell you what categories are avaliable unless you look at the code itself. Magic 8 ball has no place to input your question and thusly has no data validation. Otherwise code looks fine.
