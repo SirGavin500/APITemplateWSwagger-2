@@ -17,6 +17,7 @@ public class GuessItController : ControllerBase
     [HttpGet("easy/{guess}")]
     public IActionResult Easy(int guess)
     {
+        // Validation
         if (guess < 1 || guess > 10)
             return BadRequest("Guess must be between 1 and 10");
 
@@ -27,6 +28,7 @@ public class GuessItController : ControllerBase
     [HttpGet("medium/{guess}")]
     public IActionResult Medium(int guess)
     {
+        // Validation
         if (guess < 1 || guess > 50)
             return BadRequest("Guess must be between 1 and 50");
 
@@ -37,6 +39,7 @@ public class GuessItController : ControllerBase
     [HttpGet("hard/{guess}")]
     public IActionResult Hard(int guess)
     {
+        // Validation
         if (guess < 1 || guess > 100)
             return BadRequest("Guess must be between 1 and 100");
 

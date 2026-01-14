@@ -15,8 +15,18 @@ public class Magic8BallController : ControllerBase
     }
 
     [HttpGet("ask")]
-    public IActionResult Ask()
+    public IActionResult Ask(string question)
     {
-        return Ok(service.GetResponse());
+        // Validation: user must ask a question
+        if (string.IsNullOrWhiteSpace(question))
+        {
+            return BadRequest("You must ask a question.");
+        }
+
+        return Ok(new
+        {
+            question = question,
+            answer = service.GetResponse()
+        });
     }
 }

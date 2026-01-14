@@ -1,22 +1,32 @@
-using Microsoft.AspNetCore.Mvc;
-using APITemplateWSwagger.Services;
+using System;
+using System.Collections.Generic;
 
-namespace APITemplateWSwagger.Controllers;
-
-[ApiController]
-[Route("api/[controller]")]
-public class RestaurantPickerController : ControllerBase
+namespace APITemplateWSwagger.Services
 {
-    private readonly RestaurantPickerService service;
-
-    public RestaurantPickerController(RestaurantPickerService service)
+    public class RestaurantPickerService
     {
-        this.service = service;
-    }
+        private readonly Random random = new();
 
-    [HttpGet("{category}")]
-    public IActionResult Pick(string category)
-    {
-        return Ok(service.Pick(category));
+        private readonly Dictionary<string, List<string>> restaurants = new()
+        {
+            { "italian", new() { "Luigi's", "Pasta Palace", "Roma Dine", "Venice Cafe", "Mamma Mia", "Trattoria Roma", "Pizza Bella", "Bella Pasta", "Little Italy", "Olive Garden" } },
+            { "chinese", new() { "Golden Wok", "Dragon Express", "Panda Garden", "Great Wall", "Lucky House", "Red Lantern", "China Town", "Wok This Way", "Mandarin Delight", "Szechuan Spice" } },
+            { "mexican", new() { "El Sombrero", "Taco Loco", "Casa Bonita", "Fiesta Mexicana", "Burrito Bros", "Aztec Grill", "Cantina Mexicana", "La Fiesta", "Margarita's", "Sombrero Fiesta" } }
+        };
+
+        public string Pick(string category)
+        {
+            category = category.ToLower();
+
+            if (!restaurants.ContainsKey(category))
+                return "Invalid category";
+
+            return restaurants[category][random.Next(restaurants[category].Count)];
+        }
+
+        public List<string> GetCategories()
+        {
+            return new List<string>(restaurants.Keys);
+        }
     }
 }

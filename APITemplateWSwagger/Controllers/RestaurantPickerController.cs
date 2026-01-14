@@ -1,28 +1,34 @@
-using System;
-using System.Collections.Generic;
+using Microsoft.AspNetCore.Mvc;
+using APITemplateWSwagger.Services;
 
-namespace APITemplateWSwagger.Services
+namespace APITemplateWSwagger.Controllers;
+
+[ApiController]
+[Route("api/[controller]")]
+public class RestaurantPickerController : ControllerBase
 {
-    public class RestaurantPickerService
+    private readonly RestaurantPickerService service;
+
+    public RestaurantPickerController(RestaurantPickerService service)
     {
-        private readonly Random random = new();
+        this.service = service;
+    }
 
-        private readonly Dictionary<string, List<string>> restaurants = new()
+    [HttpGet("{category}")]
+    public IActionResult Pick(string category)
+    {
+        var result = service.Pick(category);
+
+        // Validation + helpful feedback
+        if (result == "Invalid category")
         {
-            { "italian", new() { "Luigi's", "Pasta Palace", "Roma Dine", "Venice Cafe", "Mamma Mia", "Trattoria Roma", "Pizza Bella", "Bella Pasta", "Little Italy", "Olive Garden" } },
-            { "chinese", new() { "Golden Wok", "Dragon Express", "Panda Garden", "Great Wall", "Lucky House", "Red Lantern", "China Town", "Wok This Way", "Mandarin Delight", "Szechuan Spice" } },
-            { "mexican", new() { "El Sombrero", "Taco Loco", "Casa Bonita", "Fiesta Mexicana", "Burrito Bros", "Aztec Grill", "Cantina Mexicana", "La Fiesta", "Margarita's", "Sombrero Fiesta" } }
-        };
-
-        public string Pick(string category)
-        {
-            category = category.ToLower();
-
-            if (!restaurants.ContainsKey(category))
-                return "Invalid category";
-
-            var list = restaurants[category];
-            return list[random.Next(list.Count)];
+            return BadRequest(new
+            {
+                error = "Invalid category",
+                availableCategories = service.GetCategories()
+            });
         }
+
+        return Ok(result);
     }
 }
